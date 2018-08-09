@@ -5,34 +5,33 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
-
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-public class Album {
+public class Playlist {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	private String name;
-	private Date dateOfRelease;
-	private String country;
-	private String language;
+	private Date dateOfCreation;
 	private String genre;
 	
-	@OneToMany(mappedBy = "album", cascade = CascadeType.ALL)
-	@LazyCollection(LazyCollectionOption.FALSE)
+	@ManyToMany(fetch = FetchType.EAGER, mappedBy = "playlists", cascade = CascadeType.ALL)
 	@JsonIgnore
 	private List<Song> songs;
 	
-	public Album() {
+	@ManyToOne
+	private RegisteredUser owner;
+	
+	public Playlist() {
 		
 	}
 
@@ -52,28 +51,12 @@ public class Album {
 		this.name = name;
 	}
 
-	public Date getDateOfRelease() {
-		return dateOfRelease;
+	public Date getDateOfCreation() {
+		return dateOfCreation;
 	}
 
-	public void setDateOfRelease(Date dateOfRelease) {
-		this.dateOfRelease = dateOfRelease;
-	}
-
-	public String getCountry() {
-		return country;
-	}
-
-	public void setCountry(String country) {
-		this.country = country;
-	}
-
-	public String getLanguage() {
-		return language;
-	}
-
-	public void setLanguage(String language) {
-		this.language = language;
+	public void setDateOfCreation(Date dateOfCreation) {
+		this.dateOfCreation = dateOfCreation;
 	}
 
 	public String getGenre() {
@@ -91,6 +74,15 @@ public class Album {
 	public void setSongs(List<Song> songs) {
 		this.songs = songs;
 	}
+
+	public RegisteredUser getOwner() {
+		return owner;
+	}
+
+	public void setOwner(RegisteredUser owner) {
+		this.owner = owner;
+	}
+	
 	
 	
 	

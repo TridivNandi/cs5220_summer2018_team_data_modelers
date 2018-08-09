@@ -42,6 +42,14 @@ public class Artist extends User {
 	public void setNumberOfAwards(int numberOfAwards) {
 		this.numberOfAwards = numberOfAwards;
 	}
+
+	public List<Song> getSongs() {
+		return songs;
+	}
+
+	public void setSongs(List<Song> songs) {
+		this.songs = songs;
+	}
 	
 	
 

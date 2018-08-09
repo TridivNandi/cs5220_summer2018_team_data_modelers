@@ -1,8 +1,16 @@
 package edu.northeastern.cs5200.entities;
 
 import java.util.Date;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.OneToMany;
+
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class RegisteredUser extends User {
@@ -10,6 +18,11 @@ public class RegisteredUser extends User {
 	private String planDetails;
 	private Date subscriptionStartDate;
 	private Date subscriptionEndDate;
+	
+	@OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
+	@LazyCollection(LazyCollectionOption.FALSE)
+	@JsonIgnore
+	private List<Playlist> playlists;
 	
 	public RegisteredUser() {
 		super();
