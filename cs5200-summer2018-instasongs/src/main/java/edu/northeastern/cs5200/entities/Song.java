@@ -3,6 +3,7 @@ package edu.northeastern.cs5200.entities;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -36,6 +37,12 @@ public class Song {
 	@LazyCollection(LazyCollectionOption.FALSE)
 	@JsonIgnore
 	private List<Playlist> playlists;
+	
+	@ManyToMany(mappedBy = "songs", cascade = CascadeType.ALL)
+	@LazyCollection(LazyCollectionOption.FALSE)
+	@JsonIgnore
+	private List<Artist> artists;
+	
 	
 	public Song() {
 		
@@ -103,6 +110,24 @@ public class Song {
 
 	public void setPlaylists(List<Playlist> playlists) {
 		this.playlists = playlists;
+	}
+	
+	public void addPlaylistToSong(Playlist playlist) {
+		this.playlists.add(playlist);
+		if(!playlist.getSongs().contains(this)) {
+			playlist.getSongs().add(this);
+		}	
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if(obj instanceof Song) {
+			Song song = (Song) obj;
+			if(this.id == song.id) {
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	

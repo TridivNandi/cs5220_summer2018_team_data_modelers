@@ -92,7 +92,27 @@ public class Album {
 		this.songs = songs;
 	}
 	
-	
+	public void addSongToAlbum(Song song) {
+		if(song != null && !this.songs.contains(song)) {
+			this.songs.add(song);
+			if(song.getAlbum() !=this) {
+				song.setAlbum(this);
+			}
+		}
+	}
+
+	public void removeSongFromAlbum(Song song) {
+		
+		if(this.songs.contains(song)) {
+			this.songs.remove(song);
+			if(song.getAlbum() == this) {
+				song.setAlbum(null);
+			}
+		}
+		
+		
+		
+	}
 	
 
 }

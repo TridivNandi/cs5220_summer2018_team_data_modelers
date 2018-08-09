@@ -83,6 +83,33 @@ public class Playlist {
 		this.owner = owner;
 	}
 	
+	public void addSongToPlaylist(Song song) {
+		this.songs.add(song);
+		if(!song.getPlaylists().contains(this)) {
+			song.getPlaylists().add(this);
+		}
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if(obj instanceof Playlist) {
+			Playlist playlist = (Playlist) obj;
+			if(this.id == playlist.id) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public void removeSongFromPlaylist(Song song) {
+		
+		this.songs.remove(song);
+		if(song.getPlaylists().contains(this)) {
+			song.getPlaylists().remove(this);
+		}
+		
+	}
+	
 	
 	
 	
