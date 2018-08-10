@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import edu.northeastern.cs5200.entities.Playlist;
+import edu.northeastern.cs5200.entities.RegisteredUser;
 import edu.northeastern.cs5200.entities.Song;
 import edu.northeastern.cs5200.repositories.PlaylistRepository;
 import edu.northeastern.cs5200.repositories.SongRepository;
@@ -26,9 +27,32 @@ public class PlaylistService {
 	@Autowired
 	private SongRepository songRepository;
 	
+	@Autowired
+	private SongService songService;
+	
+	@Autowired
+	private RegisteredUserService registeredUserService;
+	
 	@PostMapping("/api/playlist")
 	public Playlist createPlaylist(@RequestBody Playlist playlist) {
-		return playlistRepository.save(playlist);
+		playlist = playlistRepository.save(playlist);
+		List<Song> songs = playlist.getSongs();
+		if(songs != null && !songs.isEmpty()) {
+			for(Song song: songs) {
+				Song songTemp = songService.findSongByName(song.getName());
+				if(songTemp == null) {
+					songTemp = songService.createSong(song);	
+				}
+				songTemp.getPlaylists().add(playlist);
+				songService.updateSong(song.getId(), songTemp);
+			}
+		}
+		RegisteredUser owner = playlist.getOwner();
+		if(owner != null) {
+			owner.getPlaylists().add(playlist);
+			registeredUserService.updateRegisteredUser(owner.getId(), owner);
+		}
+		return playlist;
 		
 	}
 	

@@ -63,7 +63,7 @@ public class AlbumService {
 	}
 	
 	@DeleteMapping("/api/album/{albumId}/song/{songId}")
-	public Album removeSongToAlbum(@PathVariable("albumId") int albumId, @PathVariable("songId") int songId) {
+	public Album removeSongFromAlbum(@PathVariable("albumId") int albumId, @PathVariable("songId") int songId) {
 		
 		Album album = albumRepository.findById(albumId).get();
 		Song song = songRepository.findById(songId).get();
@@ -73,6 +73,22 @@ public class AlbumService {
 			return albumRepository.save(album);
 		}
 		System.out.println("Either album or song is null!");
+		return null;
+	}
+	
+	@PutMapping("/api/album/{albumId}")
+	public Album updateAlbum(@PathVariable("albumId") int albumId, @RequestBody Album album) {
+		Album prevAlbum = findAlbumById(albumId);
+		prevAlbum.set(album);
+		return albumRepository.save(album);
+	}
+	
+	@GetMapping("/api/album/{albumName}")
+	public Album findAlbumByName(@PathVariable("name") String name) {
+		List<Album> albums = (List<Album>) albumRepository.findAlbumByName(name);
+		if(albums != null && !albums.isEmpty()) {
+			return albums.get(0);
+		}
 		return null;
 	}
 }

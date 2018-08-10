@@ -1,5 +1,6 @@
 package edu.northeastern.cs5200.entities;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -27,13 +28,13 @@ public class Album {
 	private String language;
 	private String genre;
 	
-	@OneToMany(mappedBy = "album", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "album")
 	@LazyCollection(LazyCollectionOption.FALSE)
 	@JsonIgnore
 	private List<Song> songs;
 	
 	public Album() {
-		
+		songs = new ArrayList<>();
 	}
 
 	public int getId() {
@@ -108,11 +109,26 @@ public class Album {
 			if(song.getAlbum() == this) {
 				song.setAlbum(null);
 			}
-		}
-		
-		
-		
+		}	
 	}
+	
+	public void set(Album album) {
+		this.setCountry(album.getCountry() != null ? album.getCountry() : this.getCountry());
+		this.setDateOfRelease(album.getDateOfRelease() != null ? album.getDateOfRelease() : this.getDateOfRelease());
+		this.setGenre(album.getGenre() != null ? album.getGenre() : this.getGenre());
+		this.setLanguage(album.getLanguage() != null ? album.getLanguage() : this.getLanguage());
+		this.setName(album.getName() != null ? album.getName() : this.getName());
+		
+		if(album.getSongs() != null) {
+			if(this.getSongs() == null) {
+				this.setSongs(album.getSongs());
+			}
+			else if(this.getSongs().equals(album.getSongs())) {
+				this.setSongs(album.getSongs());
+			}
+		}
+	}
+	
 	
 
 }

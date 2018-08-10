@@ -70,7 +70,14 @@ public class User {
 		this.phoneNumber = phoneNumber;
 	}
 	
-
+	public void set(User user) {
+		this.setEmail(user.getEmail() != null ? user.getEmail() : this.getEmail());
+		this.setFirstName(user.getFirstName() != null ? user.getFirstName() : this.getFirstName());
+		this.setLastName(user.getLastName() != null ? user.getLastName() : this.getLastName());
+		this.setPassword(user.getPassword() != null ? user.getPassword() : this.getPassword());
+		this.setPhoneNumber(user.getPhoneNumber() != null ? user.getPhoneNumber() : this.getPhoneNumber());
+		this.setUsername(user.getUsername() != null ? user.getUsername() : this.getUsername());
+	}
 	
 	@Override
 	public boolean equals(Object obj) {

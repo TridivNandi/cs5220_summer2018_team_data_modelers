@@ -1,5 +1,6 @@
 package edu.northeastern.cs5200.entities;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -24,15 +25,14 @@ public class Playlist {
 	private Date dateOfCreation;
 	private String genre;
 	
-	@ManyToMany(fetch = FetchType.EAGER, mappedBy = "playlists", cascade = CascadeType.ALL)
-	@JsonIgnore
+	@ManyToMany(fetch = FetchType.EAGER, mappedBy = "playlists")
 	private List<Song> songs;
 	
 	@ManyToOne
 	private RegisteredUser owner;
 	
 	public Playlist() {
-		
+		songs = new ArrayList<>();
 	}
 
 	public int getId() {
@@ -90,6 +90,15 @@ public class Playlist {
 		}
 	}
 	
+	public void removeSongFromPlaylist(Song song) {
+		
+		this.songs.remove(song);
+		if(song.getPlaylists().contains(this)) {
+			song.getPlaylists().remove(this);
+		}
+		
+	}
+	
 	@Override
 	public boolean equals(Object obj) {
 		if(obj instanceof Playlist) {
@@ -99,15 +108,6 @@ public class Playlist {
 			}
 		}
 		return false;
-	}
-
-	public void removeSongFromPlaylist(Song song) {
-		
-		this.songs.remove(song);
-		if(song.getPlaylists().contains(this)) {
-			song.getPlaylists().remove(this);
-		}
-		
 	}
 	
 	

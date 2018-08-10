@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -41,6 +42,24 @@ public class ArtistService {
 	@GetMapping("/api/artist")
 	public List<Artist> findAllArtists(){
 		return (List<Artist>) artistRepository.findAll();
+	}
+	
+	@PutMapping("/api/artist")
+	public Artist updateArtist(@PathVariable int id, @RequestBody Artist artist) {
+		Artist prevArtist = findArtistById(id);
+		prevArtist.set(artist);
+		return artistRepository.save(prevArtist);
+		
+	}
+	
+	@GetMapping("/api/artist/{firstName}/{lastName}")
+	public Artist findArtistByName(@PathVariable String firstName, @PathVariable String lastName) {
+		
+		List<Artist> list =  (List<Artist>) artistRepository.findArtistByName(firstName, lastName);
+		if(list != null && !list.isEmpty()) {
+			return list.get(0);
+		}
+		return null;
 	}
 	
 

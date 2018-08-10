@@ -1,5 +1,6 @@
 package edu.northeastern.cs5200.entities;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -38,14 +39,14 @@ public class Song {
 	@JsonIgnore
 	private List<Playlist> playlists;
 	
-	@ManyToMany(mappedBy = "songs", cascade = CascadeType.ALL)
+	@ManyToMany(mappedBy = "songs")
 	@LazyCollection(LazyCollectionOption.FALSE)
-	@JsonIgnore
 	private List<Artist> artists;
 	
 	
 	public Song() {
-		
+		playlists =new ArrayList<>();
+		artists = new ArrayList<>();
 	}
 
 	public int getId() {
@@ -119,6 +120,16 @@ public class Song {
 		}	
 	}
 	
+	
+	
+	public List<Artist> getArtists() {
+		return artists;
+	}
+
+	public void setArtists(List<Artist> artists) {
+		this.artists = artists;
+	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if(obj instanceof Song) {
@@ -128,6 +139,42 @@ public class Song {
 			}
 		}
 		return false;
+	}
+
+	public void set(Song song) {
+		// this.setTitle(movie.getTitle() != null ? movie.getTitle() : this.getTitle());
+		this.setAlbum(song.getAlbum() != null ? song.getAlbum() : this.getAlbum());
+		this.setCountry(song.getCountry() != null ? song.getCountry() : this.getCountry());
+		this.setDateOfRelease(song.getDateOfRelease() != null ? song.getDateOfRelease() : this.getDateOfRelease());
+		this.setGenre(song.getGenre() != null ? song.getGenre() : this.getGenre());
+		this.setLanguage(song.getLanguage() != null ? song.getLanguage() : this.getLanguage());
+		this.setName(song.getName() != null ? song.getName() : this.getName());
+	
+//		if (movie.getActors() != null) {
+//			if (this.getActors() == null) {
+//				this.setActors(movie.getActors());
+//			} else if (!movie.getActors().equals(this.getActors())) {
+//				this.setActors(movie.getActors());
+//			}
+//		}
+		
+		if(song.getPlaylists() != null) {
+			if(this.getPlaylists() == null) {
+				this.setPlaylists(song.getPlaylists());
+			}
+			else if(!song.getPlaylists().equals(this.getPlaylists())) {
+				this.setPlaylists(song.getPlaylists());
+			}
+		}
+		
+		if(song.getArtists() != null) {
+			if(this.getArtists() == null) {
+				this.setArtists(song.getArtists());
+			}
+			else if(!song.getArtists().equals(this.getArtists())) {
+				this.setArtists(song.getArtists());
+			}
+		}
 	}
 	
 	

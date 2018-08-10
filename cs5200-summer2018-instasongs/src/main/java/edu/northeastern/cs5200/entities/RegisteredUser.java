@@ -1,5 +1,6 @@
 package edu.northeastern.cs5200.entities;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -19,13 +20,14 @@ public class RegisteredUser extends User {
 	private Date subscriptionStartDate;
 	private Date subscriptionEndDate;
 	
-	@OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "owner")
 	@LazyCollection(LazyCollectionOption.FALSE)
 	@JsonIgnore
 	private List<Playlist> playlists;
 	
 	public RegisteredUser() {
 		super();
+		playlists = new ArrayList<>();
 	}
 
 	public String getPlanDetails() {
@@ -51,8 +53,30 @@ public class RegisteredUser extends User {
 	public void setSubscriptionEndDate(Date subscriptionEndDate) {
 		this.subscriptionEndDate = subscriptionEndDate;
 	}
+
+	public List<Playlist> getPlaylists() {
+		return playlists;
+	}
+
+	public void setPlaylists(List<Playlist> playlists) {
+		this.playlists = playlists;
+	}
 	
-	
+	public void set(RegisteredUser user) {
+		super.set(user);
+		this.setPlanDetails(user.getPlanDetails() != null ? user.getPlanDetails() : this.getPlanDetails());
+		this.setSubscriptionEndDate(user.getSubscriptionEndDate() != null ? user.getSubscriptionEndDate() : this.getSubscriptionEndDate());
+		this.setSubscriptionStartDate(user.getSubscriptionStartDate() != null ? user.getSubscriptionStartDate() : this.getSubscriptionStartDate());
+		
+		if(user.getPlaylists() != null) {
+			if(this.getPlaylists() == null) {
+				this.setPlaylists(user.getPlaylists());
+			}
+			else if (!this.getPlaylists().equals(user.getPlaylists())) {
+				this.setPlaylists(user.getPlaylists());
+			}
+		}
+	}
 	
 	
 	

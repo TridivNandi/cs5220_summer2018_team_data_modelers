@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -40,6 +41,13 @@ public class RegisteredUserService {
 	@GetMapping("/api/registereduser")
 	public List<RegisteredUser> findAllRegisteredUsers(){
 		return (List<RegisteredUser>) registeredUserRepository.findAll();
+	}
+	
+	@PutMapping("/api/registereduser/{id}")
+	public RegisteredUser updateRegisteredUser(@PathVariable("id") int id, @RequestBody RegisteredUser user) {
+		RegisteredUser prevUser = findRegisteredUserById(id);
+		prevUser.set(user);
+		return registeredUserRepository.save(prevUser);
 	}
 
 }
