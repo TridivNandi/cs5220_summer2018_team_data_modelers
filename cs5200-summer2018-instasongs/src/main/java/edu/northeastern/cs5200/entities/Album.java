@@ -1,5 +1,7 @@
 package edu.northeastern.cs5200.entities;
 
+import static org.hamcrest.CoreMatchers.instanceOf;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -127,6 +129,17 @@ public class Album {
 				this.setSongs(album.getSongs());
 			}
 		}
+	}
+	
+	@Override
+	public boolean equals(Object object) {
+		if(object instanceof Album) {
+			Album album = (Album) object;
+			if(album.getId() == this.getId()) {
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	

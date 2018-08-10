@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import edu.northeastern.cs5200.entities.Critic;
 import edu.northeastern.cs5200.entities.Playlist;
 import edu.northeastern.cs5200.entities.RegisteredUser;
 import edu.northeastern.cs5200.entities.Song;
@@ -96,6 +97,22 @@ public class PlaylistService {
 			return playlistRepository.save(playlist);
 		}
 		System.out.println("Either playlist or song is NULL");
+		return null;
+	}
+	
+	@PutMapping("/api/playlist/{id}")
+	public Playlist updatePlaylist(@PathVariable("id") int id, @RequestBody Playlist playlist) {
+		Playlist prevPlaylist = findPlaylistById(id);
+		prevPlaylist.set(playlist);
+		return playlistRepository.save(prevPlaylist);
+	}
+	
+	@GetMapping("/api/playlist/name/{name}")
+	public Playlist findPlaylistByName(@PathVariable("name") String name) {
+		List<Playlist> playlists = (List<Playlist>) playlistRepository.findPlaylistByName(name);
+		if(playlists != null && !playlists.isEmpty()) {
+			return playlists.get(0);
+		}
 		return null;
 	}
 }

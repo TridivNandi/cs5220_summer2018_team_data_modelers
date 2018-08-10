@@ -80,11 +80,11 @@ public class AlbumService {
 	public Album updateAlbum(@PathVariable("albumId") int albumId, @RequestBody Album album) {
 		Album prevAlbum = findAlbumById(albumId);
 		prevAlbum.set(album);
-		return albumRepository.save(album);
+		return albumRepository.save(prevAlbum);
 	}
 	
-	@GetMapping("/api/album/{albumName}")
-	public Album findAlbumByName(@PathVariable("name") String name) {
+	@GetMapping("/api/album/name/{albumName}")
+	public Album findAlbumByName(@PathVariable("albumName") String name) {
 		List<Album> albums = (List<Album>) albumRepository.findAlbumByName(name);
 		if(albums != null && !albums.isEmpty()) {
 			return albums.get(0);

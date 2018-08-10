@@ -29,6 +29,7 @@ public class Playlist {
 	private List<Song> songs;
 	
 	@ManyToOne
+	@JsonIgnore
 	private RegisteredUser owner;
 	
 	public Playlist() {
@@ -97,6 +98,23 @@ public class Playlist {
 			song.getPlaylists().remove(this);
 		}
 		
+	}
+	
+	public void set(Playlist playlist) {
+		
+		this.setDateOfCreation(playlist.getDateOfCreation() != null ? playlist.getDateOfCreation() : this.getDateOfCreation());
+		this.setGenre(playlist.getGenre() != null ? playlist.getGenre() : this.getGenre());
+		this.setName(playlist.getName() != null ? playlist.getName() : this.getName());
+		this.setOwner(playlist.getOwner() != null ? playlist.getOwner() : this.getOwner());
+		
+		if(playlist.getSongs() != null) {
+			if(this.getSongs() == null) {
+				this.setSongs(playlist.getSongs());
+			}
+			else if(!playlist.getSongs().equals(this.getSongs())) {
+				this.setSongs(playlist.getSongs());
+			}
+		}
 	}
 	
 	@Override

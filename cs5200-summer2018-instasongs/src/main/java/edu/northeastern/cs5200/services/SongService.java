@@ -83,7 +83,7 @@ public class SongService {
 		
 	}
 	
-	@GetMapping("api/song/{name}")
+	@GetMapping("api/song/name/{name}")
 	public Song findSongByName(@PathVariable("name") String name) {
 		List<Song> songs = (List<Song>) songRepository.findSongByName(name);
 		if(songs != null && !songs.isEmpty()) {

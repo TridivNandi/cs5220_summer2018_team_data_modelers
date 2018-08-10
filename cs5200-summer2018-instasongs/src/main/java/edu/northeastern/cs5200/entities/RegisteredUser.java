@@ -22,7 +22,6 @@ public class RegisteredUser extends User {
 	
 	@OneToMany(mappedBy = "owner")
 	@LazyCollection(LazyCollectionOption.FALSE)
-	@JsonIgnore
 	private List<Playlist> playlists;
 	
 	public RegisteredUser() {

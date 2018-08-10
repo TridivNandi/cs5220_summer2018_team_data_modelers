@@ -44,7 +44,7 @@ public class ArtistService {
 		return (List<Artist>) artistRepository.findAll();
 	}
 	
-	@PutMapping("/api/artist")
+	@PutMapping("/api/artist/{id}")
 	public Artist updateArtist(@PathVariable int id, @RequestBody Artist artist) {
 		Artist prevArtist = findArtistById(id);
 		prevArtist.set(artist);
@@ -52,7 +52,7 @@ public class ArtistService {
 		
 	}
 	
-	@GetMapping("/api/artist/{firstName}/{lastName}")
+	@GetMapping("/api/artist/name/{firstName}/{lastName}")
 	public Artist findArtistByName(@PathVariable String firstName, @PathVariable String lastName) {
 		
 		List<Artist> list =  (List<Artist>) artistRepository.findArtistByName(firstName, lastName);
