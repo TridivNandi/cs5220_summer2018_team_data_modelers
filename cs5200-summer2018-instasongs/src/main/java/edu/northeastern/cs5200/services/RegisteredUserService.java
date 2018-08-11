@@ -11,8 +11,10 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import edu.northeastern.cs5200.entities.Artist;
 import edu.northeastern.cs5200.entities.Critic;
 import edu.northeastern.cs5200.entities.RegisteredUser;
+import edu.northeastern.cs5200.repositories.ArtistRepository;
 import edu.northeastern.cs5200.repositories.RegisteredUserRepository;
 
 @RestController
@@ -20,6 +22,12 @@ public class RegisteredUserService {
 	
 	@Autowired
 	RegisteredUserRepository registeredUserRepository;
+	
+	@Autowired
+	ArtistService artistService;
+	
+	@Autowired
+	ArtistRepository artistRepository;
 	
 	@PostMapping("/api/registereduser")
 	public RegisteredUser createRegisteredUser(@RequestBody RegisteredUser registeredUser) {
@@ -48,6 +56,19 @@ public class RegisteredUserService {
 		RegisteredUser prevUser = findRegisteredUserById(id);
 		prevUser.set(user);
 		return registeredUserRepository.save(prevUser);
+	}
+	
+	@PutMapping("/api/registereduser/follow/{userid}/{artistid}")
+	public void followArtist(@PathVariable("userid") int userid, @PathVariable("artistid") int artistid) {
+		RegisteredUser user = findRegisteredUserById(userid);
+		Artist artist = artistService.findArtistById(artistid);
+		user.addArtistToFollowing(artist);
+//		artistRepository.save(artist);
+//		registeredUserRepository.save(user);
+		artistService.updateArtist(artistid, artist);
+		updateRegisteredUser(userid, user);
+		
+		
 	}
 
 }

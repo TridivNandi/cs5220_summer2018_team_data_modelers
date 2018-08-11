@@ -12,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
@@ -29,9 +30,15 @@ public class Song {
 	private String country;
 	private String language;
 	private String genre;
+	private String imageUrl;
+	private String streamUrl;
 	
 	@ManyToOne
 	private Album album;
+	
+	@OneToMany(mappedBy = "song")
+	@LazyCollection(LazyCollectionOption.FALSE)
+	private List<Review> reviewsRecieved;
 	
 	@ManyToMany
 	@JoinTable(name = "Song2Playlist")
@@ -47,6 +54,7 @@ public class Song {
 	public Song() {
 		playlists =new ArrayList<>();
 		artists = new ArrayList<>();
+		reviewsRecieved = new ArrayList<>();
 	}
 
 	public int getId() {
@@ -128,6 +136,30 @@ public class Song {
 
 	public void setArtists(List<Artist> artists) {
 		this.artists = artists;
+	}
+	
+	public List<Review> getReviewsRecieved() {
+		return reviewsRecieved;
+	}
+
+	public void setReviewsRecieved(List<Review> reviewsRecieved) {
+		this.reviewsRecieved = reviewsRecieved;
+	}
+
+	public String getImageUrl() {
+		return imageUrl;
+	}
+
+	public void setImageUrl(String imageUrl) {
+		this.imageUrl = imageUrl;
+	}
+
+	public String getStreamUrl() {
+		return streamUrl;
+	}
+
+	public void setStreamUrl(String streamUrl) {
+		this.streamUrl = streamUrl;
 	}
 
 	@Override

@@ -6,6 +6,8 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
 import org.hibernate.annotations.LazyCollection;
@@ -24,9 +26,15 @@ public class RegisteredUser extends User {
 	@LazyCollection(LazyCollectionOption.FALSE)
 	private List<Playlist> playlists;
 	
+	@ManyToMany
+	@JoinTable(name = "UserArtistFollow")
+	@LazyCollection(LazyCollectionOption.FALSE)
+	private List<Artist> following;
+	
 	public RegisteredUser() {
 		super();
 		playlists = new ArrayList<>();
+		following = new ArrayList<>();
 	}
 
 	public String getPlanDetails() {
@@ -61,6 +69,22 @@ public class RegisteredUser extends User {
 		this.playlists = playlists;
 	}
 	
+	
+	public List<Artist> getFollowing() {
+		return following;
+	}
+
+	public void setFollowing(List<Artist> following) {
+		this.following = following;
+	}
+
+	public void addArtistToFollowing(Artist artist) {
+		this.following.add(artist);
+		if(!artist.getFollowers().contains(this)) {
+			artist.getFollowers().add(this);
+		}
+	}
+	
 	public void set(RegisteredUser user) {
 		super.set(user);
 		this.setPlanDetails(user.getPlanDetails() != null ? user.getPlanDetails() : this.getPlanDetails());
@@ -73,6 +97,15 @@ public class RegisteredUser extends User {
 			}
 			else if (!this.getPlaylists().equals(user.getPlaylists())) {
 				this.setPlaylists(user.getPlaylists());
+			}
+		}
+		
+		if(user.getFollowing() != null) {
+			if(this.getFollowing() == null) {
+				this.setFollowing(user.getFollowing());
+			}
+			else if (!this.getFollowing().equals(user.getFollowing())) {
+				this.setFollowing(user.getFollowing());
 			}
 		}
 	}

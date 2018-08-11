@@ -24,9 +24,15 @@ public class Artist extends User {
 	@JsonIgnore
 	private List<Song> songs;
 	
+	@ManyToMany(mappedBy = "following")
+	@LazyCollection(LazyCollectionOption.FALSE)
+	@JsonIgnore
+	private List<RegisteredUser> followers;
+	
 	public Artist() {
 		super();
 		songs = new ArrayList<>();
+		followers = new ArrayList<>();
 	}
 
 	public String getCareerDescription() {
@@ -53,6 +59,14 @@ public class Artist extends User {
 		this.songs = songs;
 	}
 	
+	public List<RegisteredUser> getFollowers() {
+		return followers;
+	}
+
+	public void setFollowers(List<RegisteredUser> followers) {
+		this.followers = followers;
+	}
+
 	public void set(Artist artist) {
 		this.setCareerDescription(artist.getCareerDescription() != null ? artist.getCareerDescription() : this.getCareerDescription());
 		this.setEmail(artist.getEmail() != null ? artist.getEmail() : this.getEmail());
@@ -80,6 +94,17 @@ public class Artist extends User {
 				this.setSongs(artist.getSongs());
 			}
 		}
+		
+		if(artist.getFollowers() != null) {
+			if(this.getFollowers() == null) {
+				this.setFollowers(artist.getFollowers());
+			}
+			else if(!artist.getFollowers().equals(this.getFollowers())) {
+				this.setFollowers(artist.getFollowers());
+			}
+		}
+		
+		
 	}
 	
 	
