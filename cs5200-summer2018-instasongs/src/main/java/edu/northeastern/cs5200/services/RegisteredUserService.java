@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -59,16 +60,23 @@ public class RegisteredUserService {
 	}
 	
 	@PutMapping("/api/registereduser/follow/{userid}/{artistid}")
-	public void followArtist(@PathVariable("userid") int userid, @PathVariable("artistid") int artistid) {
+	public RegisteredUser followArtist(@PathVariable("userid") int userid, @PathVariable("artistid") int artistid) {
 		RegisteredUser user = findRegisteredUserById(userid);
 		Artist artist = artistService.findArtistById(artistid);
 		user.addArtistToFollowing(artist);
-//		artistRepository.save(artist);
-//		registeredUserRepository.save(user);
 		artistService.updateArtist(artistid, artist);
-		updateRegisteredUser(userid, user);
+		return updateRegisteredUser(userid, user);
 		
 		
+	}
+	
+	@DeleteMapping("/api/registereduser/follow/{userid}/{artistid}")
+	public RegisteredUser unfollowArtist(@PathVariable("userid") int userid, @PathVariable("artistid") int artistid) {
+		RegisteredUser user = findRegisteredUserById(userid);
+		Artist artist = artistService.findArtistById(artistid);
+		user.removeArtistFromFollowing(artist);
+		artistService.updateArtist(artistid, artist);
+		return updateRegisteredUser(userid, user);
 	}
 
 }

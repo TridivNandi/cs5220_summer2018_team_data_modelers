@@ -85,6 +85,13 @@ public class RegisteredUser extends User {
 		}
 	}
 	
+	public void removeArtistFromFollowing(Artist artist) {
+		this.following.remove(artist);
+		if(artist.getFollowers().contains(this)) {
+			artist.getFollowers().remove(this);
+		}
+	}
+	
 	public void set(RegisteredUser user) {
 		super.set(user);
 		this.setPlanDetails(user.getPlanDetails() != null ? user.getPlanDetails() : this.getPlanDetails());
@@ -108,6 +115,17 @@ public class RegisteredUser extends User {
 				this.setFollowing(user.getFollowing());
 			}
 		}
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if(obj instanceof RegisteredUser) {
+			RegisteredUser user = (RegisteredUser) obj;
+			if(this.getId() == user.getId()) {
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	

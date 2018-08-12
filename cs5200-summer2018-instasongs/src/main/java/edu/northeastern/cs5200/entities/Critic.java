@@ -47,6 +47,17 @@ public class Critic extends User {
 		this.reviewsGiven = reviewsGiven;
 	}
 	
+	@Override
+	public boolean equals(Object obj) {
+		if(obj instanceof Critic) {
+			Critic critic = (Critic) obj;
+			if(this.getId() == critic.getId()) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	
 
 }

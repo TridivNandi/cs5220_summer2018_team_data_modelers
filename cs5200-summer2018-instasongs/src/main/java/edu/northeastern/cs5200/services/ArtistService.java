@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import edu.northeastern.cs5200.entities.AdminUser;
 import edu.northeastern.cs5200.entities.Artist;
 import edu.northeastern.cs5200.entities.Critic;
+import edu.northeastern.cs5200.entities.RegisteredUser;
 import edu.northeastern.cs5200.repositories.ArtistRepository;
 
 @RestController
@@ -60,6 +62,35 @@ public class ArtistService {
 			return list.get(0);
 		}
 		return null;
+	}
+	
+	@PutMapping("/api/artist/follow/{artistidFollower}/{artistidFollowing}")
+	public void followAnotherArtist(@PathVariable("artistidFollower") int artistidFollower, @PathVariable("artistidFollowing") int artistidFollowing) {
+		Artist artistFollower = findArtistById(artistidFollower);
+		Artist artistFollowing = findArtistById(artistidFollowing);
+		artistFollower.addArtistToFollowing(artistFollowing);
+		updateArtist(artistidFollowing, artistFollowing);
+		updateArtist(artistidFollower, artistFollower);
+		
+	}
+		
+	@DeleteMapping("/api/artist/follow/{artistidFollower}/{artistidFollowing}")
+	public void unfollowArtist(@PathVariable("artistidFollower") int artistidFollower, @PathVariable("artistidFollowing") int artistidFollowing) {
+		Artist artistFollower = findArtistById(artistidFollower);
+		Artist artistFollowing = findArtistById(artistidFollowing);
+		artistFollower.removeArtistFromFollowing(artistFollowing);
+		updateArtist(artistidFollowing, artistFollowing);
+		updateArtist(artistidFollower, artistFollower);
+	}
+	
+	@GetMapping("/api/artist/following/{id}")
+	public List<Artist> findAllFollowingArtists(@PathVariable ("id") int id){
+		return findArtistById(id).getArtistsFollowing();
+	}
+	
+	@GetMapping("/api/artist/follower/{id}")
+	public List<Artist> findAllFollowerArtists(@PathVariable("id") int id){
+		return findArtistById(id).getArtistFollowers();
 	}
 	
 
