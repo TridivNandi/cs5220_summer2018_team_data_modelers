@@ -3,6 +3,7 @@ package edu.northeastern.cs5200.entities;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 
@@ -14,8 +15,11 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Entity
 public class Critic extends User {
 	
+	@Column(nullable = true)
 	private String careerDescription;
-	private int numberOfAwards;
+	
+	@Column(nullable = true)
+	private Integer numberOfAwards;
 	
 	@OneToMany(mappedBy = "critic")
 	@LazyCollection(LazyCollectionOption.FALSE)
@@ -32,10 +36,10 @@ public class Critic extends User {
 	public void setCareerDescription(String careerDescription) {
 		this.careerDescription = careerDescription;
 	}
-	public int getNumberOfAwards() {
+	public Integer getNumberOfAwards() {
 		return numberOfAwards;
 	}
-	public void setNumberOfAwards(int numberOfAwards) {
+	public void setNumberOfAwards(Integer numberOfAwards) {
 		this.numberOfAwards = numberOfAwards;
 	}
 
@@ -45,6 +49,21 @@ public class Critic extends User {
 
 	public void setReviewsGiven(List<Review> reviewsGiven) {
 		this.reviewsGiven = reviewsGiven;
+	}
+	
+	public void set(Critic critic) {
+		super.set(critic);
+		this.setCareerDescription(critic.getCareerDescription() != null ? critic.getCareerDescription() : this.getCareerDescription());
+		this.setNumberOfAwards(critic.getNumberOfAwards() != null ? critic.getNumberOfAwards() : this.getNumberOfAwards());
+		
+		if(critic.getReviewsGiven() != null) {
+			if(this.getReviewsGiven() == null) {
+				this.setReviewsGiven(critic.getReviewsGiven());
+			}
+			else if(!this.getReviewsGiven().equals(critic.getReviewsGiven())) {
+				this.setReviewsGiven(critic.getReviewsGiven());
+			}
+		}
 	}
 	
 	@Override

@@ -16,6 +16,7 @@ import edu.northeastern.cs5200.entities.AdminUser;
 import edu.northeastern.cs5200.entities.Artist;
 import edu.northeastern.cs5200.entities.Critic;
 import edu.northeastern.cs5200.entities.RegisteredUser;
+import edu.northeastern.cs5200.entities.Song;
 import edu.northeastern.cs5200.repositories.ArtistRepository;
 
 @RestController
@@ -23,6 +24,17 @@ public class ArtistService {
 	
 	@Autowired
 	private ArtistRepository artistRepository;
+	
+	@Autowired
+	private SongService songService;
+	
+	@Autowired
+	private RegisteredUserService registeredUserService;
+	
+	@Autowired
+	private AdminUserService adminUserService;
+	
+	
 	
 	@PostMapping("/api/artist")
 	public Artist createArtist(@RequestBody Artist artist) {
@@ -91,6 +103,61 @@ public class ArtistService {
 	@GetMapping("/api/artist/follower/{id}")
 	public List<Artist> findAllFollowerArtists(@PathVariable("id") int id){
 		return findArtistById(id).getArtistFollowers();
+	}
+	
+	@DeleteMapping("/api/artist/{id}")
+	public void deleteArtist(@PathVariable("id") int id) {
+
+		Artist artist = findArtistById(id);
+		List<Song> songs = artist.getSongs();
+		if(songs != null && !songs.isEmpty()) {
+			for(Song song: songs) {
+				song.getArtists().remove(artist);
+				songService.updateSong(song.getId(), song);
+			}
+		}
+		
+		List<RegisteredUser> followers = artist.getFollowers();
+		if(followers != null && !followers.isEmpty()) {
+			for(RegisteredUser user: followers) {
+				user.getFollowing().remove(artist);
+				registeredUserService.updateRegisteredUser(user.getId(), user);
+			}
+		}
+		
+		List<AdminUser> adminFollowers = artist.getAdminFollowers();
+		if(adminFollowers != null && !adminFollowers.isEmpty()) {
+			for(AdminUser user: adminFollowers) {
+				user.getFollowing().remove(artist);
+				adminUserService.updateAdminUser(user.getId(), user);
+			}
+		}
+		
+		List<Artist> artistFollowers = artist.getArtistFollowers();
+		if(artistFollowers != null && !artistFollowers.isEmpty()) {
+			for(Artist artistFollower: artistFollowers) {
+				artistFollower.getArtistsFollowing().remove(artist);
+				updateArtist(artistFollower.getId(), artistFollower);
+			}
+		}
+		
+		List<Artist> artistFollowingList = artist.getArtistsFollowing();
+		if(artistFollowingList != null && !artistFollowingList.isEmpty()) {
+			for(Artist artistFollowing: artistFollowingList) {
+				artistFollowing.getArtistFollowers().remove(artist);
+				updateArtist(artistFollowing.getId(), artistFollowing);
+			}
+		}
+		
+		artistRepository.deleteById(artist.getId());
+	}
+	
+	@DeleteMapping("/api/artist")
+	public void deleteAllArtists() {
+		List<Artist> artists = findAllArtists();
+		for(Artist artist: artists) {
+			deleteArtist(artist.getId());
+		}
 	}
 	
 

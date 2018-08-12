@@ -22,9 +22,13 @@ public class AlbumService {
 	
 	@Autowired
 	private AlbumRepository albumRepository;
+//	
+//	@Autowired
+//	private SongRepository songRepository;
+	
 	
 	@Autowired
-	private SongRepository songRepository;
+	private SongService songService;
 	
 	@PostMapping("/api/album")
 	public Album createAlbum(@RequestBody Album album) {
@@ -51,8 +55,8 @@ public class AlbumService {
 	@PutMapping("/api/album/{albumId}/song/{songId}")
 	public Album addSongToAlbum(@PathVariable("albumId") int albumId, @PathVariable("songId") int songId) {
 		
-		Album album = albumRepository.findById(albumId).get();
-		Song song = songRepository.findById(songId).get();
+		Album album = findAlbumById(albumId);
+		Song song = songService.findSongById(songId);
 		
 		if(album != null && song != null) {
 			album.addSongToAlbum(song);
@@ -65,8 +69,9 @@ public class AlbumService {
 	@DeleteMapping("/api/album/{albumId}/song/{songId}")
 	public Album removeSongFromAlbum(@PathVariable("albumId") int albumId, @PathVariable("songId") int songId) {
 		
-		Album album = albumRepository.findById(albumId).get();
-		Song song = songRepository.findById(songId).get();
+		Album album = findAlbumById(albumId);
+		Song song = songService.findSongById(songId);
+		
 		
 		if(album != null && song != null) {
 			album.removeSongFromAlbum(song);
@@ -90,5 +95,26 @@ public class AlbumService {
 			return albums.get(0);
 		}
 		return null;
+	}
+	
+	@DeleteMapping("/api/album/{id}")
+	public void deleteAlbum(@PathVariable("id") int id) {
+		Album album = findAlbumById(id);
+		List<Song> songs = album.getSongs();
+		if(songs != null && !songs.isEmpty()) {
+			for(Song song: songs) {
+				song.setAlbum(null);
+				songService.updateSong(song.getId(), song);	
+			}
+		}
+		albumRepository.deleteById(album.getId());
+	}
+	
+	@DeleteMapping("/api/album")
+	public void deleteAllAlbums() {
+		List<Album> albumList = findAllAlbums();
+		for(Album album: albumList) {
+			deleteAlbum(album.getId());
+		}
 	}
 }

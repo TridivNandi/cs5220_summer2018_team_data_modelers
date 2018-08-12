@@ -77,7 +77,21 @@ public class AdminUserService {
 	@DeleteMapping("/api/adminuser/{id}")
 	public void deleteAdminUser(@PathVariable ("id") int id) {
 		AdminUser user = findAdminUserById(id);
-		
+		if(!user.getFollowing().isEmpty()) {
+			for(Artist artist: user.getFollowing()) {
+				artist.getAdminFollowers().remove(this);
+				artistService.updateArtist(artist.getId(), artist);
+			}
+		}
+		adminUserRepository.deleteById(id);
+	}
+	
+	@DeleteMapping("/api/adminuser")
+	public void deleteAll() {
+		List<AdminUser> adminUserList = findAllAdminUsers();
+		for(AdminUser user: adminUserList) {
+			deleteAdminUser(user.getId());
+		}
 	}
 
 }
