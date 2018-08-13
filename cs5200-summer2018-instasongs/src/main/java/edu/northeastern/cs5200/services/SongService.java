@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import edu.northeastern.cs5200.entities.Album;
 import edu.northeastern.cs5200.entities.Artist;
 import edu.northeastern.cs5200.entities.Critic;
+import edu.northeastern.cs5200.entities.Review;
 import edu.northeastern.cs5200.entities.Song;
 import edu.northeastern.cs5200.repositories.ArtistRepository;
 import edu.northeastern.cs5200.repositories.CriticRepository;
@@ -90,6 +92,13 @@ public class SongService {
 			return songs.get(0);
 		}
 		return null;
+	}
+	
+	@DeleteMapping("/api/song/{id}")
+	public void deleteSong(@PathVariable("id") int id) {
+		Song song = findSongById(id);
+		List<Review> reviewsRecieved = song.getReviewsRecieved();
+		
 	}
 	
 	 

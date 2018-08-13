@@ -29,7 +29,6 @@ public class Playlist {
 	private List<Song> songs;
 	
 	@ManyToOne
-	@JsonIgnore
 	private RegisteredUser owner;
 	
 	public Playlist() {

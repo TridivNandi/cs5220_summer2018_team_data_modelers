@@ -85,5 +85,14 @@ public class ReviewService {
 		reviewRepository.deleteById(id);
 	}
 	
+	@DeleteMapping("/api/review")
+	public void deleteAllReviews() {
+		List<Review> reviews = findAllReviews();
+		for(Review review: reviews) {
+			deleteReview(review.getId());
+		}
+	}
+	
+	
 	
 }

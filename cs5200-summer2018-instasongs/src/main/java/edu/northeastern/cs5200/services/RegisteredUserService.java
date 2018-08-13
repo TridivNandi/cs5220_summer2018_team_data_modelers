@@ -1,5 +1,6 @@
 package edu.northeastern.cs5200.services;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import edu.northeastern.cs5200.entities.Artist;
 import edu.northeastern.cs5200.entities.Critic;
+import edu.northeastern.cs5200.entities.Playlist;
 import edu.northeastern.cs5200.entities.RegisteredUser;
 import edu.northeastern.cs5200.repositories.ArtistRepository;
 import edu.northeastern.cs5200.repositories.RegisteredUserRepository;
@@ -29,6 +31,9 @@ public class RegisteredUserService {
 	
 	@Autowired
 	ArtistRepository artistRepository;
+	
+	@Autowired
+	PlaylistService playlistService;
 	
 	@PostMapping("/api/registereduser")
 	public RegisteredUser createRegisteredUser(@RequestBody RegisteredUser registeredUser) {
@@ -77,6 +82,44 @@ public class RegisteredUserService {
 		user.removeArtistFromFollowing(artist);
 		artistService.updateArtist(artistid, artist);
 		return updateRegisteredUser(userid, user);
+	}
+	
+	@DeleteMapping("/api/registereduser/{id}")
+	public void deleteRegisteredUser(@PathVariable ("id") int id) {
+		RegisteredUser user = findRegisteredUserById(id);
+		List<Playlist> playlists = user.getPlaylists();
+		List<Integer> temp = new ArrayList<>();
+		if(playlists != null && !playlists.isEmpty()) {
+			for(Playlist pl: playlists) {
+				pl.setOwner(null);
+				temp.add(pl.getId());
+				playlistService.updatePlaylist(pl.getId(), pl);
+			}
+			
+		}
+		
+		List<Artist> following = user.getFollowing();
+		if(following != null && !following.isEmpty()) {
+			for(Artist artist: following) {
+				artist.getFollowers().remove(user);
+				artistService.updateArtist(artist.getId(), artist);
+			}
+		}
+		
+		registeredUserRepository.deleteById(user.getId());
+		if(temp != null && !temp.isEmpty()) {
+			for(Integer plId: temp) {
+				playlistService.deletePlaylist(plId);
+			}
+		}
+	}
+	
+	@DeleteMapping("/api/registereduser")
+	public void deleteAllRegisteredUsers() {
+		List<RegisteredUser> userList = findAllRegisteredUsers();
+		for(RegisteredUser user : userList) {
+			deleteRegisteredUser(user.getId());
+		}
 	}
 
 }

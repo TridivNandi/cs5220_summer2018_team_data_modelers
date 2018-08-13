@@ -25,8 +25,6 @@ public class PlaylistService {
 	@Autowired
 	private PlaylistRepository playlistRepository;
 	
-	@Autowired
-	private SongRepository songRepository;
 	
 	@Autowired
 	private SongService songService;
@@ -45,10 +43,11 @@ public class PlaylistService {
 					songTemp = songService.createSong(song);	
 				}
 				songTemp.getPlaylists().add(playlist);
-				songService.updateSong(song.getId(), songTemp);
+				songService.updateSong(songTemp.getId(), songTemp);
 			}
 		}
 		RegisteredUser owner = playlist.getOwner();
+		owner = registeredUserService.findRegisteredUserById(owner.getId());
 		if(owner != null) {
 			owner.getPlaylists().add(playlist);
 			registeredUserService.updateRegisteredUser(owner.getId(), owner);
@@ -77,7 +76,7 @@ public class PlaylistService {
 	public Playlist addSongToPlaylist(@PathVariable("playlistId") int playlistId, @PathVariable("songId") int songId) {
 		
 		Playlist playlist = playlistRepository.findById(playlistId).get();
-		Song song = songRepository.findById(songId).get();
+		Song song = songService.findSongById(songId);
 		if(playlist != null && song != null) {
 			playlist.addSongToPlaylist(song);
 			return playlistRepository.save(playlist);
@@ -91,7 +90,7 @@ public class PlaylistService {
 	public Playlist removeSongFromPlaylist(@PathVariable("playlistId") int playlistId, @PathVariable("songId") int songId) {
 		
 		Playlist playlist = playlistRepository.findById(playlistId).get();
-		Song song = songRepository.findById(songId).get();
+		Song song = songService.findSongById(songId);
 		if(playlist != null && song != null) {
 			playlist.removeSongFromPlaylist(song);
 			return playlistRepository.save(playlist);
@@ -114,5 +113,32 @@ public class PlaylistService {
 			return playlists.get(0);
 		}
 		return null;
+	}
+	
+	@DeleteMapping("/api/playlist/{id}")
+	public void deletePlaylist(@PathVariable ("id") int id) {
+		Playlist playlist = findPlaylistById(id);
+		List<Song> songs = playlist.getSongs();
+		if(songs != null && !songs.isEmpty()) {
+			for(Song song:songs) {
+				song.getPlaylists().remove(playlist);
+				songService.updateSong(song.getId(), song);
+			}
+		}
+		RegisteredUser owner = playlist.getOwner();
+		if(owner != null) {
+			owner.getPlaylists().remove(playlist);
+			registeredUserService.updateRegisteredUser(owner.getId(), owner);
+		}
+		
+		playlistRepository.deleteById(id);
+	}
+	
+	@DeleteMapping("/api/playlist")
+	public void deleteAllPlaylists() {
+		List<Playlist> playLists = findAllPlaylists();
+		for(Playlist playlist: playLists) {
+			deletePlaylist(playlist.getId());
+		}
 	}
 }
