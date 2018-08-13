@@ -1,6 +1,5 @@
 package edu.northeastern.cs5200.entities;
 
-import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 
 import java.util.ArrayList;
 import java.util.Date;

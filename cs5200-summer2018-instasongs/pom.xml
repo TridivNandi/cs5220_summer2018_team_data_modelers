@@ -6,7 +6,7 @@
 	<groupId>edu.northeastern.cs5200</groupId>
 	<artifactId>cs5200-summer2018-instasongs</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>jar</packaging>
+	<packaging>war</packaging>
 
 	<name>cs5200-summer2018-instasongs</name>
 	<description>Project for InstaSongs</description>
