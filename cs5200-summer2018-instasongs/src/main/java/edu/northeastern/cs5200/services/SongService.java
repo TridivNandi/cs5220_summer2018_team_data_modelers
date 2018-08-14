@@ -40,6 +40,12 @@ public class SongService {
 	@Autowired
 	private PlaylistService playlistService;
 	
+	
+	/**
+	 * Creates a new entry for a song
+	 * @param song
+	 * @return
+	 */
 	@PostMapping("/api/song")
 	public Song createSong(@RequestBody Song song) {
 		Album album = song.getAlbum();
@@ -68,6 +74,12 @@ public class SongService {
 		
 	}
 	
+	
+	/**
+	 * Retrieves a song by it's id
+	 * @param id
+	 * @return
+	 */
 	@GetMapping("/api/song/{id}")
 	public Song findSongById(@PathVariable("id") int id) {
 		Optional<Song> song =  songRepository.findById(id);
@@ -79,11 +91,22 @@ public class SongService {
 		}
 	}
 	
+	/**
+	 * Retrieves all the songs
+	 * @return
+	 */
 	@GetMapping("/api/song")
 	public List<Song> findAllSongs(){
 		return (List<Song>) songRepository.findAll();
 	}
 	
+	
+	/**
+	 * Update the attributes of a particular song
+	 * @param id
+	 * @param song
+	 * @return
+	 */
 	@PutMapping("api/song/{id}")
 	public Song updateSong(@PathVariable("id") int id, @RequestBody Song song) {
 		Song prevSong = findSongById(id);
@@ -92,6 +115,12 @@ public class SongService {
 		
 	}
 	
+	
+	/**
+	 * Retrieves the details of a song by it's name
+	 * @param name
+	 * @return
+	 */
 	@GetMapping("api/song/name/{name}")
 	public Song findSongByName(@PathVariable("name") String name) {
 		List<Song> songs = (List<Song>) songRepository.findSongByName(name);
@@ -101,6 +130,11 @@ public class SongService {
 		return null;
 	}
 	
+	
+	/**
+	 * Delete a song by it's id
+	 * @param id
+	 */
 	@DeleteMapping("/api/song/{id}")
 	public void deleteSong(@PathVariable("id") int id) {
 		Song song = findSongById(id);
@@ -132,6 +166,10 @@ public class SongService {
 		
 	}
 	
+	
+	/**
+	 * Delete all songs
+	 */
 	@DeleteMapping("/api/song")
 	public void deleteAllSongs() {
 		List<Song> songs = findAllSongs();

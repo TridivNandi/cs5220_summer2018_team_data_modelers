@@ -36,6 +36,13 @@ public class ReviewService {
 	@Autowired
 	CriticRepository criticRepo;
 	
+	/**
+	 * Create a new entry for a review given by a particular critic for a particular song
+	 * @param criticId
+	 * @param songId
+	 * @param review
+	 * @return
+	 */
 	@PostMapping("/api/review/critic/{criticId}/song/{songId}")
 	public Review createReview(@PathVariable("criticId") int criticId, @PathVariable("songId") int songId, @RequestBody Review review) {
 		Critic critic = criticService.findCriticById(criticId);
@@ -49,23 +56,45 @@ public class ReviewService {
 		return review;
 	}
 	
-	@GetMapping("/api/review/")
+	
+	/**
+	 * Retrieve all the reviews
+	 * @return
+	 */
+	@GetMapping("/api/review")
 	public List<Review> findAllReviews(){
 		return (List<Review>) reviewRepository.findAll();
 	}
 	
+	/**
+	 * Retrieves a review by it's id
+	 * @param id
+	 * @return
+	 */
 	@GetMapping("/api/review/{id}")
 	public Review findReviewById(@PathVariable("id") int id) {
 		
 		return reviewRepository.findById(id).get();
 	}
 	
+	/**
+	 * Retrieve the list of reviews given by a critic for a particular song
+	 * @param criticId
+	 * @param songId
+	 * @return
+	 */
 	@GetMapping("/api/review/critic/{criticId}/song/{songId}")
 	public List<Review> findReviewByCriticForSong(@PathVariable("criticId") int criticId, @PathVariable("songId") int songId) {
 		
 		return (List<Review>) reviewRepository.findReviewByCrticSong(criticService.findCriticById(criticId), songService.findSongById(songId));
 	}
 	
+	/**
+	 * Update the attributes of a particular review
+	 * @param id
+	 * @param review
+	 * @return
+	 */
 	@PutMapping("/api/review/{id}")
 	public Review updateReview(@PathVariable("id") int id, @RequestBody Review review) {
 		Review prevReview = findReviewById(id);
@@ -73,6 +102,11 @@ public class ReviewService {
 		return reviewRepository.save(prevReview);
 	}
 	
+	
+	/**
+	 * Delete a particular review by it's id
+	 * @param id
+	 */
 	@DeleteMapping("/api/review/{id}")
 	public void deleteReview(@PathVariable("id") int id) {
 		
@@ -85,6 +119,10 @@ public class ReviewService {
 		reviewRepository.deleteById(id);
 	}
 	
+	
+	/**
+	 * Delete all the reviews
+	 */
 	@DeleteMapping("/api/review")
 	public void deleteAllReviews() {
 		List<Review> reviews = findAllReviews();

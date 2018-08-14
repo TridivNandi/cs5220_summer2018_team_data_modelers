@@ -25,13 +25,17 @@ public class PlaylistService {
 	@Autowired
 	private PlaylistRepository playlistRepository;
 	
-	
 	@Autowired
 	private SongService songService;
 	
 	@Autowired
 	private RegisteredUserService registeredUserService;
 	
+	/**
+	 * Creates a new playlist
+	 * @param playlist
+	 * @return
+	 */
 	@PostMapping("/api/playlist")
 	public Playlist createPlaylist(@RequestBody Playlist playlist) {
 		playlist = playlistRepository.save(playlist);
@@ -56,6 +60,11 @@ public class PlaylistService {
 		
 	}
 	
+	/**
+	 * Retrieves a playlist by it's id
+	 * @param id
+	 * @return
+	 */
 	@GetMapping("/api/playlist/{id}")
 	public Playlist findPlaylistById(@PathVariable("id") int id) {
 		Optional<Playlist> playlist =  playlistRepository.findById(id);
@@ -67,11 +76,21 @@ public class PlaylistService {
 		}
 	}
 	
+	/**
+	 * Retrieves all the playlists
+	 * @return
+	 */
 	@GetMapping("/api/playlist")
 	public List<Playlist> findAllPlaylists(){
 		return (List<Playlist>) playlistRepository.findAll();
 	}
 
+	/**
+	 * Adds a particular song to the playlist
+	 * @param playlistId
+	 * @param songId
+	 * @return
+	 */
 	@PutMapping("/api/playlist/{playlistId}/song/{songId}")
 	public Playlist addSongToPlaylist(@PathVariable("playlistId") int playlistId, @PathVariable("songId") int songId) {
 		
@@ -86,6 +105,13 @@ public class PlaylistService {
 		
 	}
 	
+	
+	/**
+	 * Removes a song from a playlist
+	 * @param playlistId
+	 * @param songId
+	 * @return
+	 */
 	@DeleteMapping("/api/playlist/{playlistId}/song/{songId}")
 	public Playlist removeSongFromPlaylist(@PathVariable("playlistId") int playlistId, @PathVariable("songId") int songId) {
 		
@@ -99,6 +125,12 @@ public class PlaylistService {
 		return null;
 	}
 	
+	/**
+	 * Updates the details of a playlist
+	 * @param id
+	 * @param playlist
+	 * @return
+	 */
 	@PutMapping("/api/playlist/{id}")
 	public Playlist updatePlaylist(@PathVariable("id") int id, @RequestBody Playlist playlist) {
 		Playlist prevPlaylist = findPlaylistById(id);
@@ -106,6 +138,11 @@ public class PlaylistService {
 		return playlistRepository.save(prevPlaylist);
 	}
 	
+	/**
+	 * Retrieve a playlist by it's name
+	 * @param name
+	 * @return
+	 */
 	@GetMapping("/api/playlist/name/{name}")
 	public Playlist findPlaylistByName(@PathVariable("name") String name) {
 		List<Playlist> playlists = (List<Playlist>) playlistRepository.findPlaylistByName(name);
@@ -115,6 +152,10 @@ public class PlaylistService {
 		return null;
 	}
 	
+	/**
+	 * Delete a playlist by it's id
+	 * @param id
+	 */
 	@DeleteMapping("/api/playlist/{id}")
 	public void deletePlaylist(@PathVariable ("id") int id) {
 		Playlist playlist = findPlaylistById(id);
@@ -134,6 +175,9 @@ public class PlaylistService {
 		playlistRepository.deleteById(id);
 	}
 	
+	/**
+	 * Delete all the playlists
+	 */
 	@DeleteMapping("/api/playlist")
 	public void deleteAllPlaylists() {
 		List<Playlist> playLists = findAllPlaylists();

@@ -35,12 +35,23 @@ public class RegisteredUserService {
 	@Autowired
 	PlaylistService playlistService;
 	
+	/**
+	 * Creates a new entry for registered users
+	 * @param registeredUser
+	 * @return
+	 */
 	@PostMapping("/api/registereduser")
 	public RegisteredUser createRegisteredUser(@RequestBody RegisteredUser registeredUser) {
 		return registeredUserRepository.save(registeredUser);
 		
 	}
 	
+	
+	/**
+	 * Retrieves a registered user by his/her id
+	 * @param id
+	 * @return
+	 */
 	@GetMapping("/api/registereduser/{id}")
 	public RegisteredUser findRegisteredUserById(@PathVariable("id") int id) {
 		Optional<RegisteredUser> registeredUser =  registeredUserRepository.findById(id);
@@ -52,11 +63,23 @@ public class RegisteredUserService {
 		}
 	}
 	
+	
+	/**
+	 * Retrieves all registered users
+	 * @return
+	 */
 	@GetMapping("/api/registereduser")
 	public List<RegisteredUser> findAllRegisteredUsers(){
 		return (List<RegisteredUser>) registeredUserRepository.findAll();
 	}
 	
+	
+	/**
+	 * Updates the details of a registered user
+	 * @param id
+	 * @param user
+	 * @return
+	 */
 	@PutMapping("/api/registereduser/{id}")
 	public RegisteredUser updateRegisteredUser(@PathVariable("id") int id, @RequestBody RegisteredUser user) {
 		RegisteredUser prevUser = findRegisteredUserById(id);
@@ -64,6 +87,13 @@ public class RegisteredUserService {
 		return registeredUserRepository.save(prevUser);
 	}
 	
+	
+	/**
+	 * Makes an registered user follow an artist
+	 * @param userid
+	 * @param artistid
+	 * @return
+	 */
 	@PutMapping("/api/registereduser/follow/{userid}/{artistid}")
 	public RegisteredUser followArtist(@PathVariable("userid") int userid, @PathVariable("artistid") int artistid) {
 		RegisteredUser user = findRegisteredUserById(userid);
@@ -75,6 +105,13 @@ public class RegisteredUserService {
 		
 	}
 	
+	
+	/**
+	 * Makes a registered user un-follow an artist
+	 * @param userid
+	 * @param artistid
+	 * @return
+	 */
 	@DeleteMapping("/api/registereduser/follow/{userid}/{artistid}")
 	public RegisteredUser unfollowArtist(@PathVariable("userid") int userid, @PathVariable("artistid") int artistid) {
 		RegisteredUser user = findRegisteredUserById(userid);
@@ -84,6 +121,10 @@ public class RegisteredUserService {
 		return updateRegisteredUser(userid, user);
 	}
 	
+	/**
+	 * Deletes a registered user by id
+	 * @param id
+	 */
 	@DeleteMapping("/api/registereduser/{id}")
 	public void deleteRegisteredUser(@PathVariable ("id") int id) {
 		RegisteredUser user = findRegisteredUserById(id);
@@ -114,6 +155,9 @@ public class RegisteredUserService {
 		}
 	}
 	
+	/**
+	 * Deletes all registered users
+	 */
 	@DeleteMapping("/api/registereduser")
 	public void deleteAllRegisteredUsers() {
 		List<RegisteredUser> userList = findAllRegisteredUsers();
@@ -122,6 +166,11 @@ public class RegisteredUserService {
 		}
 	}
 	
+	/**
+	 * Retrieves all the playlists for a registered user
+	 * @param id
+	 * @return
+	 */
 	@GetMapping("/api/registereduser/{id}/playlists")
 	public List<Playlist> getAllPlaylists(@PathVariable ("id") int id) {
 		RegisteredUser user = findRegisteredUserById(id);
@@ -131,6 +180,12 @@ public class RegisteredUserService {
 		return null;
 	}
 	
+	
+	/**
+	 * Retrieves all the artists that a particular registered user is following
+	 * @param id
+	 * @return
+	 */
 	@GetMapping("/api/registereduser/{id}/following")
 	public List<Artist> getArtistsFollowing(@PathVariable ("id") int id){
 		RegisteredUser user = findRegisteredUserById(id);
