@@ -3,6 +3,7 @@ package edu.northeastern.cs5200.services;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -42,5 +43,18 @@ public class UserService {
 		User prevUser = findUserById(id);
 		prevUser.set(user);
 		return userRepository.save(prevUser);
+	}
+	
+	@DeleteMapping("/api/user/{id}")
+	public void deleteUser(@PathVariable("id") int id) {
+		userRepository.deleteById(id);	
+	}
+	
+	@DeleteMapping("/api/user")
+	public void deleteAllUsers() {
+		List<User> users = findAllUsers();
+		for(User user: users) {
+			deleteUser(user.getId());
+		}
 	}
 }

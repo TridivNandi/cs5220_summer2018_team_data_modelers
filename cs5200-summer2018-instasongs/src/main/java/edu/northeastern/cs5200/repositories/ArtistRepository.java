@@ -9,7 +9,7 @@ import edu.northeastern.cs5200.entities.Song;
 
 public interface ArtistRepository extends CrudRepository<Artist, Integer>{
 	
-	@Query("SELECT a FROM Artist a WHERE a.firstName=:firstName and a.lastName=:lastName")
-	Iterable<Artist> findArtistByName(@Param("firstName") String firstName, @Param("lastName") String lastName);
+	@Query("SELECT a FROM Artist a WHERE a.name=:name")
+	Iterable<Artist> findArtistByName(@Param("name") String name);
 
 }

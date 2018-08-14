@@ -26,10 +26,7 @@ public class Song {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	private String name;
-	private Date dateOfRelease;
-	private String country;
-	private String language;
-	private String genre;
+	private Long playCount;
 	private String imageUrl;
 	private String streamUrl;
 	
@@ -71,38 +68,6 @@ public class Song {
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	public Date getDateOfRelease() {
-		return dateOfRelease;
-	}
-
-	public void setDateOfRelease(Date dateOfRelease) {
-		this.dateOfRelease = dateOfRelease;
-	}
-
-	public String getCountry() {
-		return country;
-	}
-
-	public void setCountry(String country) {
-		this.country = country;
-	}
-
-	public String getLanguage() {
-		return language;
-	}
-
-	public void setLanguage(String language) {
-		this.language = language;
-	}
-
-	public String getGenre() {
-		return genre;
-	}
-
-	public void setGenre(String genre) {
-		this.genre = genre;
 	}
 
 	public Album getAlbum() {
@@ -162,6 +127,14 @@ public class Song {
 		this.streamUrl = streamUrl;
 	}
 
+	public Long getPlayCount() {
+		return playCount;
+	}
+
+	public void setPlayCount(Long playCount) {
+		this.playCount = playCount;
+	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if(obj instanceof Song) {
@@ -174,22 +147,12 @@ public class Song {
 	}
 
 	public void set(Song song) {
-		// this.setTitle(movie.getTitle() != null ? movie.getTitle() : this.getTitle());
 		this.setAlbum(song.getAlbum() != null ? song.getAlbum() : this.getAlbum());
-		this.setCountry(song.getCountry() != null ? song.getCountry() : this.getCountry());
-		this.setDateOfRelease(song.getDateOfRelease() != null ? song.getDateOfRelease() : this.getDateOfRelease());
-		this.setGenre(song.getGenre() != null ? song.getGenre() : this.getGenre());
-		this.setLanguage(song.getLanguage() != null ? song.getLanguage() : this.getLanguage());
+		this.setPlayCount(song.getPlayCount() != null ? song.getPlayCount() : this.getPlayCount());
 		this.setName(song.getName() != null ? song.getName() : this.getName());
-	
-//		if (movie.getActors() != null) {
-//			if (this.getActors() == null) {
-//				this.setActors(movie.getActors());
-//			} else if (!movie.getActors().equals(this.getActors())) {
-//				this.setActors(movie.getActors());
-//			}
-//		}
-		
+		this.setImageUrl(song.getImageUrl() != null ? song.getImageUrl() : this.getImageUrl());
+		this.setStreamUrl(song.getStreamUrl() != null ? song.getStreamUrl() : this.getStreamUrl());
+
 		if(song.getPlaylists() != null) {
 			if(this.getPlaylists() == null) {
 				this.setPlaylists(song.getPlaylists());

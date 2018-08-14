@@ -24,11 +24,13 @@ public class RegisteredUser extends User {
 	
 	@OneToMany(mappedBy = "owner")
 	@LazyCollection(LazyCollectionOption.FALSE)
+	@JsonIgnore
 	private List<Playlist> playlists;
 	
 	@ManyToMany
 	@JoinTable(name = "UserArtistFollow")
 	@LazyCollection(LazyCollectionOption.FALSE)
+	@JsonIgnore
 	private List<Artist> following;
 	
 	public RegisteredUser() {

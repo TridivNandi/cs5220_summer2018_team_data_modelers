@@ -121,5 +121,23 @@ public class RegisteredUserService {
 			deleteRegisteredUser(user.getId());
 		}
 	}
+	
+	@GetMapping("/api/registereduser/{id}/playlists")
+	public List<Playlist> getAllPlaylists(@PathVariable ("id") int id) {
+		RegisteredUser user = findRegisteredUserById(id);
+		if(user != null) {
+			return user.getPlaylists();
+		}
+		return null;
+	}
+	
+	@GetMapping("/api/registereduser/{id}/following")
+	public List<Artist> getArtistsFollowing(@PathVariable ("id") int id){
+		RegisteredUser user = findRegisteredUserById(id);
+		if(user != null) {
+			return user.getFollowing();
+		}
+		return null;
+	}
 
 }

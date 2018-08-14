@@ -66,10 +66,10 @@ public class ArtistService {
 		
 	}
 	
-	@GetMapping("/api/artist/name/{firstName}/{lastName}")
-	public Artist findArtistByName(@PathVariable String firstName, @PathVariable String lastName) {
+	@GetMapping("/api/artist/name/{name}")
+	public Artist findArtistByName(@PathVariable String name) {
 		
-		List<Artist> list =  (List<Artist>) artistRepository.findArtistByName(firstName, lastName);
+		List<Artist> list =  (List<Artist>) artistRepository.findArtistByName(name);
 		if(list != null && !list.isEmpty()) {
 			return list.get(0);
 		}

@@ -16,8 +16,11 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Entity
 public class Artist extends User {
 	
-	private String careerDescription;
-	private Integer numberOfAwards;
+	private String name;
+	private Long playCount;
+	private Long listeners;
+	private String detailsUrl;
+	private String imageUrl;
 	
 	@ManyToMany
 	@JoinTable(name = "Artist2Song")
@@ -56,21 +59,6 @@ public class Artist extends User {
 		adminFollowers = new ArrayList<>();
 	}
 
-	public String getCareerDescription() {
-		return careerDescription;
-	}
-
-	public void setCareerDescription(String careerDescription) {
-		this.careerDescription = careerDescription;
-	}
-
-	public Integer getNumberOfAwards() {
-		return numberOfAwards;
-	}
-
-	public void setNumberOfAwards(Integer numberOfAwards) {
-		this.numberOfAwards = numberOfAwards;
-	}
 
 	public List<Song> getSongs() {
 		return songs;
@@ -104,8 +92,6 @@ public class Artist extends User {
 	public void setArtistFollowers(List<Artist> artistFollowers) {
 		this.artistFollowers = artistFollowers;
 	}
-	
-	
 
 	public List<Artist> getArtistsFollowing() {
 		return artistsFollowing;
@@ -114,16 +100,67 @@ public class Artist extends User {
 	public void setArtistsFollowing(List<Artist> artistsFollowing) {
 		this.artistsFollowing = artistsFollowing;
 	}
+	
+	
+
+	public String getName() {
+		return name;
+	}
+
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+
+	public Long getPlayCount() {
+		return playCount;
+	}
+
+
+	public void setPlayCount(Long playCount) {
+		this.playCount = playCount;
+	}
+
+
+	public Long getListeners() {
+		return listeners;
+	}
+
+
+	public void setListeners(Long listeners) {
+		this.listeners = listeners;
+	}
+
+
+	public String getDetailsUrl() {
+		return detailsUrl;
+	}
+
+
+	public void setDetailsUrl(String detailsUrl) {
+		this.detailsUrl = detailsUrl;
+	}
+
+
+	public String getImageUrl() {
+		return imageUrl;
+	}
+
+
+	public void setImageUrl(String imageUrl) {
+		this.imageUrl = imageUrl;
+	}
+
 
 	public void set(Artist artist) {
-		this.setCareerDescription(artist.getCareerDescription() != null ? artist.getCareerDescription() : this.getCareerDescription());
-		this.setEmail(artist.getEmail() != null ? artist.getEmail() : this.getEmail());
-		this.setFirstName(artist.getFirstName() != null ? artist.getFirstName() : this.getFirstName());
-		this.setLastName(artist.getLastName() != null ? artist.getLastName() : this.getLastName());
-		this.setNumberOfAwards(artist.getNumberOfAwards() != null ? artist.getNumberOfAwards() : this.getNumberOfAwards());
-		this.setPassword(artist.getPassword() != null ? artist.getPassword() : this.getPassword());
-		this.setPhoneNumber(artist.getPhoneNumber() != null ? artist.getPhoneNumber() : this.getPhoneNumber());
-		this.setUsername(artist.getUsername() != null ? artist.getUsername() : this.getUsername());
+		
+		super.set(artist);
+		this.setName(artist.getName() != null ? artist.getName() : this.getName());
+		this.setImageUrl(artist.getImageUrl() != null ? artist.getImageUrl() : this.getImageUrl());
+		this.setDetailsUrl(artist.getDetailsUrl() != null ? artist.getDetailsUrl() : this.getDetailsUrl());
+		this.setListeners(artist.getListeners() != null ? artist.getListeners() : this.getListeners());
+		this.setPlayCount(artist.getPlayCount() != null ? artist.getPlayCount() : this.getPlayCount());
 		
 		if(artist.getSongs() != null) {
 			if(this.getSongs() == null) {

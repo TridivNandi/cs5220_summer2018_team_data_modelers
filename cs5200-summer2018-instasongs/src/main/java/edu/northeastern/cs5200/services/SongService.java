@@ -55,7 +55,7 @@ public class SongService {
 		List<Artist> artists = song.getArtists();
 		if(artists != null && artists.size() != 0) {
 			for(Artist artist: artists) {
-				Artist tempArtist = artistService.findArtistByName(artist.getFirstName(), artist.getLastName());
+				Artist tempArtist = artistService.findArtistByName(artist.getName());
 				if(tempArtist == null) {
 					tempArtist = artistService.createArtist(artist);
 				}	
