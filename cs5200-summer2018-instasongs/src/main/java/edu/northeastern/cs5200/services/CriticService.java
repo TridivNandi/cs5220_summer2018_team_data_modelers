@@ -27,12 +27,22 @@ public class CriticService {
 	@Autowired
 	private ReviewService reviewService;
 	
+	/**
+	 * Creates a new entry for critic
+	 * @param critic
+	 * @return
+	 */
 	@PostMapping("/api/critic")
 	public Critic createCritic(@RequestBody Critic critic) {
 		return criticRepository.save(critic);
 		
 	}
 	
+	/**
+	 * Retrieves critic by id
+	 * @param id
+	 * @return
+	 */
 	@GetMapping("/api/critic/{id}")
 	public Critic findCriticById(@PathVariable("id") int id) {
 		Optional<Critic> critic =  criticRepository.findById(id);
@@ -44,11 +54,23 @@ public class CriticService {
 		}
 	}
 	
+	
+	/**
+	 * Retrieves all the critics
+	 * @return
+	 */
 	@GetMapping("/api/critic")
 	public List<Critic> findAllCritics(){
 		return (List<Critic>) criticRepository.findAll();
 	}
 	
+	
+	/**
+	 * Updates the attributes of a critic
+	 * @param id
+	 * @param critic
+	 * @return
+	 */
 	@PutMapping("/api/critic/{id}")
 	public Critic updateCritic(@PathVariable("id") int id, @RequestBody Critic critic) {
 		Critic prevCritic = findCriticById(id);
@@ -56,6 +78,12 @@ public class CriticService {
 		return criticRepository.save(prevCritic);
 	}
 	
+	/**
+	 * Retrieve a critic by his/her first and last name
+	 * @param firstName
+	 * @param lastName
+	 * @return
+	 */
 	@GetMapping("/api/critic/name/{firstName}/{lastName}")
 	public Critic findCriticByName(@PathVariable("firstName") String firstName, @PathVariable("lastName") String lastName) {
 		List<Critic> criticList = (List<Critic>) criticRepository.findCriticByName(firstName, lastName);
@@ -65,6 +93,11 @@ public class CriticService {
 		return null;
 	}
 	
+	
+	/**
+	 * Delete a particular critic by his/her id
+	 * @param id
+	 */
 	@DeleteMapping("/api/critic/{id}")
 	public void deleteCritic(@PathVariable("id") int id) {
 		Critic critic = findCriticById(id);
@@ -78,6 +111,9 @@ public class CriticService {
 		criticRepository.deleteById(id);
 	}
 	
+	/**
+	 * Deletes all the critics
+	 */
 	@DeleteMapping("/api/critic")
 	public void deleteAllCritics() {
 		List<Critic> critics = findAllCritics();

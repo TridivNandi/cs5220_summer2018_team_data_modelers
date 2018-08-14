@@ -21,21 +21,27 @@ import edu.northeastern.cs5200.repositories.SongRepository;
 public class AlbumService {
 	
 	@Autowired
-	private AlbumRepository albumRepository;
-//	
-//	@Autowired
-//	private SongRepository songRepository;
-	
+	private AlbumRepository albumRepository;	
 	
 	@Autowired
 	private SongService songService;
 	
+	/**
+	 * Creates an entry of the album 
+	 * @param album
+	 * @return
+	 */
 	@PostMapping("/api/album")
 	public Album createAlbum(@RequestBody Album album) {
 		return albumRepository.save(album);
 		
 	}
 	
+	/**
+	 * Retrieves an album by it's id
+	 * @param id
+	 * @return
+	 */
 	@GetMapping("/api/album/{id}")
 	public Album findAlbumById(@PathVariable("id") int id) {
 		Optional<Album> album =  albumRepository.findById(id);
@@ -47,11 +53,21 @@ public class AlbumService {
 		}
 	}
 	
+	/**
+	 * Retrieves all albums
+	 * @return
+	 */
 	@GetMapping("/api/album")
 	public List<Album> findAllAlbums(){
 		return (List<Album>) albumRepository.findAll();
 	}
 	
+	/**
+	 * Adds a song to an album
+	 * @param albumId
+	 * @param songId
+	 * @return
+	 */
 	@PutMapping("/api/album/{albumId}/song/{songId}")
 	public Album addSongToAlbum(@PathVariable("albumId") int albumId, @PathVariable("songId") int songId) {
 		
@@ -66,6 +82,13 @@ public class AlbumService {
 		return null;
 	}
 	
+	
+	/**
+	 * Removes a song from an album
+	 * @param albumId
+	 * @param songId
+	 * @return
+	 */
 	@DeleteMapping("/api/album/{albumId}/song/{songId}")
 	public Album removeSongFromAlbum(@PathVariable("albumId") int albumId, @PathVariable("songId") int songId) {
 		
@@ -81,6 +104,13 @@ public class AlbumService {
 		return null;
 	}
 	
+	
+	/**
+	 * Update the attributes of an album
+	 * @param albumId
+	 * @param album
+	 * @return
+	 */
 	@PutMapping("/api/album/{albumId}")
 	public Album updateAlbum(@PathVariable("albumId") int albumId, @RequestBody Album album) {
 		Album prevAlbum = findAlbumById(albumId);
@@ -88,6 +118,12 @@ public class AlbumService {
 		return albumRepository.save(prevAlbum);
 	}
 	
+	
+	/**
+	 * Retrieve an album by it's name
+	 * @param name
+	 * @return
+	 */
 	@GetMapping("/api/album/name/{albumName}")
 	public Album findAlbumByName(@PathVariable("albumName") String name) {
 		List<Album> albums = (List<Album>) albumRepository.findAlbumByName(name);
@@ -97,6 +133,11 @@ public class AlbumService {
 		return null;
 	}
 	
+	
+	/**
+	 * Delete an album by it's id
+	 * @param id
+	 */
 	@DeleteMapping("/api/album/{id}")
 	public void deleteAlbum(@PathVariable("id") int id) {
 		Album album = findAlbumById(id);
@@ -110,6 +151,10 @@ public class AlbumService {
 		albumRepository.deleteById(album.getId());
 	}
 	
+	
+	/**
+	 * Delete all albums
+	 */
 	@DeleteMapping("/api/album")
 	public void deleteAllAlbums() {
 		List<Album> albumList = findAllAlbums();

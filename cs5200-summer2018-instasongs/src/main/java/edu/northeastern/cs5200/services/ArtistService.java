@@ -34,14 +34,22 @@ public class ArtistService {
 	@Autowired
 	private AdminUserService adminUserService;
 	
-	
-	
+	/**
+	 * Creates a new entry for artist	
+	 * @param artist
+	 * @return
+	 */
 	@PostMapping("/api/artist")
 	public Artist createArtist(@RequestBody Artist artist) {
 		return artistRepository.save(artist);
 		
 	}
 	
+	/**
+	 * Retrieves an artist by it's id
+	 * @param id
+	 * @return
+	 */
 	@GetMapping("/api/artist/{id}")
 	public Artist findArtistById(@PathVariable("id") int id) {
 		Optional<Artist> artist =  artistRepository.findById(id);
@@ -53,11 +61,21 @@ public class ArtistService {
 		}
 	}
 	
+	/**
+	 * Retrieves all artists
+	 * @return
+	 */
 	@GetMapping("/api/artist")
 	public List<Artist> findAllArtists(){
 		return (List<Artist>) artistRepository.findAll();
 	}
 	
+	/**
+	 * Update attributes of an artist
+	 * @param id
+	 * @param artist
+	 * @return
+	 */
 	@PutMapping("/api/artist/{id}")
 	public Artist updateArtist(@PathVariable int id, @RequestBody Artist artist) {
 		Artist prevArtist = findArtistById(id);
@@ -66,6 +84,12 @@ public class ArtistService {
 		
 	}
 	
+	
+	/**
+	 * Retrieves an artist by it's name
+	 * @param name
+	 * @return
+	 */
 	@GetMapping("/api/artist/name/{name}")
 	public Artist findArtistByName(@PathVariable String name) {
 		
@@ -76,6 +100,12 @@ public class ArtistService {
 		return null;
 	}
 	
+	
+	/**
+	 * Makes an artist follow another fellow artist
+	 * @param artistidFollower
+	 * @param artistidFollowing
+	 */
 	@PutMapping("/api/artist/follow/{artistidFollower}/{artistidFollowing}")
 	public void followAnotherArtist(@PathVariable("artistidFollower") int artistidFollower, @PathVariable("artistidFollowing") int artistidFollowing) {
 		Artist artistFollower = findArtistById(artistidFollower);
@@ -86,6 +116,11 @@ public class ArtistService {
 		
 	}
 		
+	/**
+	 * Makes an artist un-follow another fellow artist
+	 * @param artistidFollower
+	 * @param artistidFollowing
+	 */
 	@DeleteMapping("/api/artist/follow/{artistidFollower}/{artistidFollowing}")
 	public void unfollowArtist(@PathVariable("artistidFollower") int artistidFollower, @PathVariable("artistidFollowing") int artistidFollowing) {
 		Artist artistFollower = findArtistById(artistidFollower);
@@ -95,16 +130,30 @@ public class ArtistService {
 		updateArtist(artistidFollower, artistFollower);
 	}
 	
+	/**
+	 * Retrieves all artists that a particular artist is following
+	 * @param id
+	 * @return
+	 */
 	@GetMapping("/api/artist/following/{id}")
 	public List<Artist> findAllFollowingArtists(@PathVariable ("id") int id){
 		return findArtistById(id).getArtistsFollowing();
 	}
 	
+	/**
+	 * Retrieves all artists that are followers of a particular atrist
+	 * @param id
+	 * @return
+	 */
 	@GetMapping("/api/artist/follower/{id}")
 	public List<Artist> findAllFollowerArtists(@PathVariable("id") int id){
 		return findArtistById(id).getArtistFollowers();
 	}
 	
+	/**
+	 * Deletes a particular artist by it's id
+	 * @param id
+	 */
 	@DeleteMapping("/api/artist/{id}")
 	public void deleteArtist(@PathVariable("id") int id) {
 
@@ -152,6 +201,9 @@ public class ArtistService {
 		artistRepository.deleteById(artist.getId());
 	}
 	
+	/**
+	 * Deletes all artists
+	 */
 	@DeleteMapping("/api/artist")
 	public void deleteAllArtists() {
 		List<Artist> artists = findAllArtists();

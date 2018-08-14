@@ -26,11 +26,21 @@ public class AdminUserService {
 	@Autowired
 	ArtistService artistService;
 	
+	/**
+	 * Creates a new entry of admin in the database
+	 * @param admin
+	 * @return
+	 */
 	@PostMapping("/api/adminuser")
 	public AdminUser createAdminUser(@RequestBody AdminUser admin) {
 		return adminUserRepository.save(admin);
 	}
 	
+	/**
+	 * Retrieves details of an admin by id
+	 * @param id
+	 * @return
+	 */
 	@GetMapping("/api/adminuser/{id}")
 	public AdminUser findAdminUserById(@PathVariable("id") int id) {
 		Optional<AdminUser> adminUser =  adminUserRepository.findById(id);
@@ -42,11 +52,21 @@ public class AdminUserService {
 		}
 	}
 	
+	/**
+	 * Retrieves all the admins
+	 * @return
+	 */
 	@GetMapping("/api/adminuser")
 	public List<AdminUser> findAllAdminUsers(){
 		return (List<AdminUser>) adminUserRepository.findAll();
 	}
 	
+	/**
+	 * Updates the attributes of an admin
+	 * @param id
+	 * @param user
+	 * @return
+	 */
 	@PutMapping("/api/adminuser/{id}")
 	public AdminUser updateAdminUser(@PathVariable("id") int id, @RequestBody AdminUser user) {
 		AdminUser prevUser = findAdminUserById(id);
@@ -54,6 +74,12 @@ public class AdminUserService {
 		return adminUserRepository.save(prevUser);
 	}
 	
+	/**
+	 * Makes a particular admin follow a particular artist
+	 * @param userid
+	 * @param artistid
+	 * @return
+	 */
 	@PutMapping("/api/adminuser/follow/{userid}/{artistid}")
 	public AdminUser followArtist(@PathVariable("userid") int userid, @PathVariable("artistid") int artistid) {
 		AdminUser user = findAdminUserById(userid);
@@ -65,6 +91,12 @@ public class AdminUserService {
 		
 	}
 	
+	/**
+	 * Makes a particular admin un-follow a particular artist
+	 * @param userid
+	 * @param artistid
+	 * @return
+	 */
 	@DeleteMapping("/api/adminuser/follow/{userid}/{artistid}")
 	public AdminUser unfollowArtist(@PathVariable("userid") int userid, @PathVariable("artistid") int artistid) {
 		AdminUser user = findAdminUserById(userid);
@@ -74,6 +106,10 @@ public class AdminUserService {
 		return updateAdminUser(userid, user);
 	}
 	
+	/**
+	 * Deletes an admin
+	 * @param id
+	 */
 	@DeleteMapping("/api/adminuser/{id}")
 	public void deleteAdminUser(@PathVariable ("id") int id) {
 		AdminUser user = findAdminUserById(id);
@@ -86,6 +122,9 @@ public class AdminUserService {
 		adminUserRepository.deleteById(id);
 	}
 	
+	/**
+	 * Deletes all the admins
+	 */
 	@DeleteMapping("/api/adminuser")
 	public void deleteAll() {
 		List<AdminUser> adminUserList = findAllAdminUsers();
