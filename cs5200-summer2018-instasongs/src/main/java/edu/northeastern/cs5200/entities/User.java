@@ -7,10 +7,16 @@ import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 
+/**
+ * Represents the User class. All types of users extends this class.
+ * @author Tridiv
+ *
+ */
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 public class User {
 
+	// instance variables
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
@@ -21,12 +27,14 @@ public class User {
 	private String email;
 	private String phoneNumber;
 	
-	
+	/**
+	 * Represents the default constructor
+	 */
 	public User() {
 		super();
 	}
 	
-	
+	// Getters and Setters
 	public int getId() {
 		return id;
 	}
@@ -70,6 +78,11 @@ public class User {
 		this.phoneNumber = phoneNumber;
 	}
 	
+	/**
+	 * Updates the attributes of current reference with that of the user object
+	 * passed as argument
+	 * @param user
+	 */
 	public void set(User user) {
 		this.setEmail(user.getEmail() != null ? user.getEmail() : this.getEmail());
 		this.setFirstName(user.getFirstName() != null ? user.getFirstName() : this.getFirstName());
@@ -79,6 +92,10 @@ public class User {
 		this.setUsername(user.getUsername() != null ? user.getUsername() : this.getUsername());
 	}
 	
+	/**
+	 * Overridden version of the equals method. Two users are considered
+	 * equal only if they have the same id
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (obj instanceof User) {
