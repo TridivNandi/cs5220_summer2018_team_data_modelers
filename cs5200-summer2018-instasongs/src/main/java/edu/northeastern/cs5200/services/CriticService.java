@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import edu.northeastern.cs5200.entities.AdminUser;
 import edu.northeastern.cs5200.entities.Artist;
 import edu.northeastern.cs5200.entities.Critic;
 import edu.northeastern.cs5200.entities.RegisteredUser;
@@ -120,5 +121,20 @@ public class CriticService {
 		for(Critic critic: critics) {
 			deleteCritic(critic.getId());
 		}
+	}
+	
+	/**
+	 * Retrieves critic on the basis of username and password
+	 * @param username
+	 * @param password
+	 * @return
+	 */
+	@GetMapping("/api/critic/credentials/{username}/{password}")
+	public Critic findCriticByCredentials(@PathVariable("username") String username, @PathVariable("password") String password) {
+		List<Critic> userList = (List<Critic>) criticRepository.findCriticByCredentials(username, password);
+		if(userList != null && userList.size() > 0) {
+			return userList.get(0);
+		}
+		return null;
 	}
 }

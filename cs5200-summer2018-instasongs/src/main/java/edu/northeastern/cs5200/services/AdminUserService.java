@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import edu.northeastern.cs5200.entities.AdminUser;
 import edu.northeastern.cs5200.entities.Artist;
 import edu.northeastern.cs5200.entities.RegisteredUser;
+import edu.northeastern.cs5200.entities.User;
 import edu.northeastern.cs5200.repositories.AdminUserRepository;
 
 @RestController
@@ -25,6 +26,7 @@ public class AdminUserService {
 	
 	@Autowired
 	ArtistService artistService;
+	
 	
 	/**
 	 * Creates a new entry of admin in the database
@@ -132,5 +134,20 @@ public class AdminUserService {
 			deleteAdminUser(user.getId());
 		}
 	}
+	
 
+	/**
+	 * Retrieves admin user on the basis of username and password
+	 * @param username
+	 * @param password
+	 * @return
+	 */
+	@GetMapping("/api/adminuser/credentials/{username}/{password}")
+	public AdminUser findAdminUserByCredentials(@PathVariable("username") String username, @PathVariable("password") String password) {
+		List<AdminUser> userList = (List<AdminUser>) adminUserRepository.findAdminUserByCredentials(username, password);
+		if(userList != null && userList.size() > 0) {
+			return userList.get(0);
+		}
+		return null;
+	}
 }

@@ -212,5 +212,21 @@ public class ArtistService {
 		}
 	}
 	
+	
+	/**
+	 * Retrieves artist on the basis of username and password
+	 * @param username
+	 * @param password
+	 * @return
+	 */
+	@GetMapping("/api/artist/credentials/{username}/{password}")
+	public Artist findArtistByCredentials(@PathVariable("username") String username, @PathVariable("password") String password) {
+		List<Artist> userList = (List<Artist>) artistRepository.findArtistByCredentials(username, password);
+		if(userList != null && userList.size() > 0) {
+			return userList.get(0);
+		}
+		return null;
+	}
+	
 
 }

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import edu.northeastern.cs5200.entities.AdminUser;
 import edu.northeastern.cs5200.entities.Artist;
 import edu.northeastern.cs5200.entities.Critic;
 import edu.northeastern.cs5200.entities.Playlist;
@@ -191,6 +192,21 @@ public class RegisteredUserService {
 		RegisteredUser user = findRegisteredUserById(id);
 		if(user != null) {
 			return user.getFollowing();
+		}
+		return null;
+	}
+	
+	/**
+	 * Retrieves registered user on the basis of username and password
+	 * @param username
+	 * @param password
+	 * @return
+	 */
+	@GetMapping("/api/registereduser/credentials/{username}/{password}")
+	public RegisteredUser findRegisteredUserByCredentials(@PathVariable("username") String username, @PathVariable("password") String password) {
+		List<RegisteredUser> userList = (List<RegisteredUser>) registeredUserRepository.findRegisteredUserByCredentials(username, password);
+		if(userList != null && userList.size() > 0) {
+			return userList.get(0);
 		}
 		return null;
 	}
