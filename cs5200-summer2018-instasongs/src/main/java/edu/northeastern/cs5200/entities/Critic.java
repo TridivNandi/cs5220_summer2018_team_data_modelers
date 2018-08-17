@@ -10,6 +10,8 @@ import javax.persistence.OneToMany;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 /**
  * Represents the Critic Class. Critics are a special type of user.
  * 
@@ -28,6 +30,7 @@ public class Critic extends User {
 
 	@OneToMany(mappedBy = "critic")
 	@LazyCollection(LazyCollectionOption.FALSE)
+	@JsonIgnore
 	private List<Review> reviewsGiven;
 
 	/**

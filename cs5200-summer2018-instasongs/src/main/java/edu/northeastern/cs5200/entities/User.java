@@ -26,6 +26,7 @@ public class User {
 	private String lastName;
 	private String email;
 	private String phoneNumber;
+	private String type;
 	
 	/**
 	 * Represents the default constructor
@@ -77,7 +78,14 @@ public class User {
 	public void setPhoneNumber(String phoneNumber) {
 		this.phoneNumber = phoneNumber;
 	}
-	
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
 	/**
 	 * Updates the attributes of current reference with that of the user object
 	 * passed as argument
@@ -90,6 +98,7 @@ public class User {
 		this.setPassword(user.getPassword() != null ? user.getPassword() : this.getPassword());
 		this.setPhoneNumber(user.getPhoneNumber() != null ? user.getPhoneNumber() : this.getPhoneNumber());
 		this.setUsername(user.getUsername() != null ? user.getUsername() : this.getUsername());
+		this.setType(user.getType() != null ? user.getType() : this.getType());
 	}
 	
 	/**

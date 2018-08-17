@@ -25,8 +25,8 @@ public class Review {
 	@ManyToOne
 	@JsonIgnore
 	private Song song;
+	
 	@ManyToOne
-	@JsonIgnore
 	private Critic critic;
 
 	private String content;

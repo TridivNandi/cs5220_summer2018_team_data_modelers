@@ -65,6 +65,16 @@ public class CriticService {
 		return (List<Critic>) criticRepository.findAll();
 	}
 	
+	/**
+	 * Retrieves all the reviews given by a critic
+	 * @param id
+	 * @return
+	 */
+	@GetMapping("/api/critic/{id}/reviews")
+	public List<Review> getAllReviewsForCritic(@PathVariable ("id") int id){
+		return findCriticById(id).getReviewsGiven();
+	}
+	
 	
 	/**
 	 * Updates the attributes of a critic

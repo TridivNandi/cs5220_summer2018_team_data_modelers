@@ -90,6 +90,17 @@ public class ReviewService {
 	}
 	
 	/**
+	 * Retrieves the list of reviews for a particular song
+	 * @param songId
+	 * @return
+	 */
+	@GetMapping("/api/review/song/{songId}")
+	public List<Review> findAllReviewsForSong(@PathVariable("songId") int songId){
+		
+		return (List<Review>) reviewRepository.findAllReviewsForSong(songService.findSongById(songId));
+	}
+	
+	/**
 	 * Update the attributes of a particular review
 	 * @param id
 	 * @param review
