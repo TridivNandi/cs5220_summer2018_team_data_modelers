@@ -101,6 +101,15 @@ public class ReviewService {
 	}
 	
 	/**
+	 * Retrieves the song for a particular review
+	 */
+	@GetMapping("/api/review/{id}/song")
+	public Song findSongForAReview(@PathVariable("id") int id) {
+		return findReviewById(id).getSong();
+	}
+	
+	
+	/**
 	 * Update the attributes of a particular review
 	 * @param id
 	 * @param review

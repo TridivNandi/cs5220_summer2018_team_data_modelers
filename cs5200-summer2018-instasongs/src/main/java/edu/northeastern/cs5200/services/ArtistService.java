@@ -150,6 +150,27 @@ public class ArtistService {
 		return findArtistById(id).getArtistFollowers();
 	}
 	
+
+	/**
+	 * Retrieves all registered users that are followers of a particular atrist
+	 * @param id
+	 * @return
+	 */
+	@GetMapping("/api/artist/registereduser/follower/{id}")
+	public List<RegisteredUser> findAllFollowerRegUsers(@PathVariable("id") int id){
+		return findArtistById(id).getFollowers();
+	}
+	
+	/**
+	 * Retrieves all admin users that are followers of a particular artist
+	 * @param id
+	 * @return
+	 */
+	@GetMapping("/api/artist/admin/follower/{id}")
+	public List<AdminUser> findAllFollowerAdminUsers(@PathVariable("id") int id){
+		return findArtistById(id).getAdminFollowers();
+	}
+	
 	/**
 	 * Deletes a particular artist by it's id
 	 * @param id
