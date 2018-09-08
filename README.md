@@ -34,32 +34,28 @@ The human users relevant to our application are as follows:
 User:
 
 1. Users can login to our application.
-2. Users can listen to music.
-3. Users can follow artists.
-4. Users can like songs.
-5. Users can create and manage playlists.
-6. Users can see reviews by critics.
+2. Users can follow artists.
+3. Users can create playlists.
+4. Users can add songs to playlists.
+5. Users can see reviews by critics.
 
 Artist:
 
 1. Artists can see followers.
 2. Artists can follow other artists.
 3. Artists can see reviews and ratings.
-4. Artists can authorize themselves as legitimate artists
 
 Critics:
 
 1. Critics can add reviews to songs.
 2. Critics can follow artists.
 3. Critics can rate songs.
-4. Critics can listen to songs.
 
 Admin:
 
 1. Admin can perform CRUD operations on users.
 2. Admins can perform CRUD operations on artists.
 3. Admins can perform CRUD operations on critics.
-4. Admins can delete reviews.
 
 
 
